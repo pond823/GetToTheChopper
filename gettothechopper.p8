@@ -10,9 +10,11 @@ game = {}
 game.state = 1
 game.timer = 1
 sprites = {}
+player = {}
 
 function _init()
-  new_sprite(64,64,5,{1,2},1,0,0)
+
+  player.sprite = new_sprite(64,100,5,{1,2},1,0,0)
 
 end
 
@@ -37,6 +39,13 @@ if (btnp(5)) game.state = 2
 end
 
 function update_game_screen()
+  if (btn(0)) then 
+    if (player.sprite.x>1) player.sprite.x-=1
+  end
+
+  if (btn(1)) then
+    if (player.sprite.x<128) player.sprite.x+=1
+  end
 end
 
 --
