@@ -12,6 +12,7 @@ game.timer = 1
 sprites = {}
 player = {}
 bullets = {}
+terrain = {}
 
 function _init()
 
@@ -41,6 +42,8 @@ end
 
 function update_game_screen()
   foreach(bullets, update_bullet)
+  foreach(terrain, scroll_terrain)
+
   if (btn(0)) then 
     if (player.sprite.x>1) player.sprite.x-=1
   end
@@ -48,6 +51,11 @@ function update_game_screen()
     if (player.sprite.x<128) player.sprite.x+=1
   end
   if (btnp(5)) shoot_gun()
+
+  add_random_terrain()
+
+
+
 end
 
 function update_bullet(bullet)
@@ -62,6 +70,21 @@ function shoot_gun()
   log("Shoot_gun "..count(bullets).."-"..bullet.x.."/"..bullet.y)
 end
 
+function add_random_terrain()
+  type = rnd (30)+40
+
+  if (type >63 and type <66) then
+    t = new_sprite(rnd(128),0,5,{type},1,0,0)
+    add(terrain,t)
+  end
+end
+
+function scroll_terrain(item)
+  item.y+=1
+  if (item.y >128) del(terrain,item)
+end
+
+
 
 --
 -- draw functions
@@ -71,7 +94,6 @@ function draw_start_screen()
     print ("press ❎ to start", 0,20)
 end
 function draw_game_screen()
-  print ("get ready", 0,10)
   foreach(sprites, sprite_draw)
 end
 
