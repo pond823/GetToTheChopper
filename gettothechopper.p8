@@ -57,9 +57,9 @@ end
 
 
 function shoot_gun()
-  bullet = new_sprite(player.sprite.x, player.sprite.y,{16},1,0,0)
+  bullet = new_sprite(player.sprite.x, player.sprite.y,1,{16, 16},1,0,0)
   add(bullets,bullet)
-  log("Shoot_gun "..count(bullets)..bullet.x.."/"..bullet.y)
+  log("Shoot_gun "..count(bullets).."-"..bullet.x.."/"..bullet.y)
 end
 
 
