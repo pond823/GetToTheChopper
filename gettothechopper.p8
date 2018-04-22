@@ -92,7 +92,7 @@ function shoot_gun()
 end
 
 function add_random_terrain()
-  type = flr(rnd(30)) + 40
+  type = flr(rnd(20)) + 50
 
 
   if (type >63 and type <70) then
@@ -118,7 +118,7 @@ function scroll_plasma(item)
 end
 
 function add_random_bad_guy()
-  type = flr(rnd(15))
+  type = flr(rnd(12))
   if (type == 1) then
     b = new_sprite(flr(rnd(128)),0,5,{3,4},1,0,0, 6, 4)
     add(bad_guys,b)
@@ -263,7 +263,7 @@ end
 function draw_game_screen()
   
   if (game.distance < 70) draw_chopper(50, 70-game.distance)
-  
+
   foreach(sprites, sprite_draw)
   print("score "..game.score.." time "..game.run_time.." distance "..game.distance)
   
