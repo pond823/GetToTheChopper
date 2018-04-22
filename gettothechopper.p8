@@ -24,6 +24,7 @@ predators = {}
 predator_plasma={}
 
 function _init()
+  create_text()
   player.base = 110
   player.sprite = new_sprite(64,player.base,5,{1,2},1,0,0,6,4)
 
@@ -244,9 +245,18 @@ end
 --
 -- draw functions
 --
+
+function create_text()
+  l1 = "get to the chopper"
+  l2 = "press ❎ to start"
+  l3 = "you got to the chopper"
+  l4 = "booooom, you lose"
+end
+
 function draw_start_screen()
-    print ("get to the chopper", 0,10)
-    print ("press ❎ to start", 0,20)
+
+    print (l1, hcenter(l1),50,6)
+    print (l2, hcenter(l2),60,6)
 end
 function draw_game_screen()
   foreach(sprites, sprite_draw)
@@ -255,17 +265,22 @@ function draw_game_screen()
 end
 
 function draw_win_screen()
-  print("you got to the chopper")
-  print("with a score of "..game.score)
+  print (l3, hcenter(l3),50,6)
+  l5 = "with a score of "..game.score
+  print(l5, hcenter(l5),60,6)
 end
 
 function draw_lose_screen()
   circfill(64,64,game.boom, 10)
   if (game.boom < 250) game.boom +=1
-  print("booooom, you lose", 10,50,0) 
-  print("with a score of "..game.score, 10,60, 0)
+  print(l4, hcenter(l4),50,6) 
+  l5 = "with a score of "..game.score
+  print(l5, hcenter(l5),60,6)
 end
 
+function hcenter(s)
+  return 64-#s*2
+end
 
 --
 -- sprite code
