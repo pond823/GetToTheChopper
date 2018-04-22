@@ -26,14 +26,12 @@ predator_plasma={}
 function _init()
   create_text()
   player.base = 110
-  player.sprite = new_sprite(64,player.base,5,{1,2},1,0,0,6,4)
-
 end
 
 function _update()
     update_timer()
     foreach(sprites, update_sprite)
-  	if (game.state == 1) update_start_screen()
+  	if (game.state != 2) update_start_screen()
     if (game.state == 2) update_game_screen()
 end
 
@@ -49,7 +47,18 @@ end
 -- update functions
 --
 function update_start_screen()
-  if (btnp(5)) game.state = 2
+  if (btnp(5)) then 
+    game.state = 2
+    game.run_time = 1000
+    game.distance = 800
+    bullets = {}
+    terrain = {}
+    bad_guys = {}
+    predators = {}
+    predator_plasma={}
+    sprites = {}
+    player.sprite = new_sprite(64,player.base,5,{1,2},1,0,0,6,4)
+  end
 end
 
 function update_game_screen()
@@ -273,7 +282,8 @@ function draw_win_screen()
   print (l3, hcenter(l3),50,6)
   l5 = "with a score of "..game.score
   print(l5, hcenter(l5),60,6)
-    draw_chopper(50,30)
+  draw_chopper(50,30)
+  print (l2, hcenter(l2),70,6)
 end
 
 function draw_lose_screen()
@@ -282,6 +292,7 @@ function draw_lose_screen()
   print(l4, hcenter(l4),50,6) 
   l5 = "with a score of "..game.score
   print(l5, hcenter(l5),60,6)
+  print (l2, hcenter(l2),70,6)
 end
 
 function draw_chopper(x,y)
