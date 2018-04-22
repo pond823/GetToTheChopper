@@ -14,6 +14,7 @@ game.get_up_timer =0
 game.score = 0
 game.run_time = 1000
 game.distance = 800
+game.boom =0
 sprites = {}
 player = {}
 bullets = {}
@@ -210,8 +211,10 @@ function draw_win_screen()
 end
 
 function draw_lose_screen()
-  print("booooom, you lose") 
-  print("with a score of "..game.score)
+  circfill(64,64,game.boom, 10)
+  if (game.boom < 250) game.boom +=1
+  print("booooom, you lose", 10,50,0) 
+  print("with a score of "..game.score, 10,60, 0)
 end
 
 
