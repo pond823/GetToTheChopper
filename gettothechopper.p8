@@ -21,10 +21,11 @@ bullets = {}
 terrain = {}
 bad_guys = {}
 predators = {}
+predator_plasma={}
 
 function _init()
-
-  player.sprite = new_sprite(64,100,5,{1,2},1,0,0,6,4)
+  player.base = 110
+  player.sprite = new_sprite(64,player.base,5,{1,2},1,0,0,6,4)
 
 end
 
@@ -59,7 +60,8 @@ function update_game_screen()
   foreach(terrain, scroll_terrain)
   foreach(bad_guys, scroll_bad_guy)
   foreach(predators, scroll_predator)
-  
+  foreach(predator_plasma, scroll_plasma)
+  predator_shoot()
   knock_down_check()
   bullets_collide()
   player_collide()
@@ -102,6 +104,14 @@ function scroll_terrain(item)
   item.y+=game.scroll
   if (item.y >128) then 
     del(terrain,item)
+    del(sprites,item)
+  end
+end
+
+function scroll_plasma(item)
+  item.y+=game.scroll+3
+  if (item.y >128) then 
+    del(predator_plasma,item)
     del(sprites,item)
   end
 end
@@ -153,7 +163,20 @@ function bullets_collide()
         end
       end
     end
+    for _,predator in pairs(predators) do
+       if (bullet != nil and predator != nil) then
+        if (collison(bullet, predator)) then
+          
+          del(predators,predator)
+          del(bullet,bullets)
+          del(sprites,predator)
+          del(sprites,bullets)
+          game.score +=100
+        end
+      end
+    end
   end
+  
 end
 
 function player_collide()
@@ -165,7 +188,7 @@ function player_collide()
           game.scroll = 0
           game.get_up_timer = 30
           del(sprites,player.sprite)
-          player.sprite = new_sprite(player.sprite.x,100,5,{5,6},1,0,0,6,4)
+          player.sprite = new_sprite(player.sprite.x,player.base,5,{5,6},1,0,0,6,4)
         end
       end
     end
@@ -175,7 +198,20 @@ function player_collide()
           game.scroll = 0
           game.get_up_timer = 40
           del(sprites,player.sprite)
-          player.sprite = new_sprite(player.sprite.x,100,3,{5,6},1,0,0,6,4)
+          player.sprite = new_sprite(player.sprite.x,player.base,3,{5,6},1,0,0,6,4)
+        end
+      end
+    end
+
+    for _,plasma in pairs(predator_plasma) do
+    if (player.sprite != nil and plasma != nil) then
+      if (collison(player.sprite, plasma)) then
+          del(predator_plasma, plasma)
+          del(sprites,plasma)          
+          game.scroll = 0
+          game.get_up_timer = 40
+          del(sprites,player.sprite)
+          player.sprite = new_sprite(player.sprite.x,player.base,3,{5,6},1,0,0,6,4)
         end
       end
     end
@@ -188,8 +224,21 @@ function knock_down_check()
   if (game.get_up_timer == 1) then 
     game.scroll = 1
     del(sprites,player.sprite)
-    player.sprite = new_sprite(player.sprite.x,100,5,{1,2},1,0,0,6,4)
+    player.sprite = new_sprite(player.sprite.x,player.base,5,{1,2},1,0,0,6,4)
   end 
+end
+
+function predator_shoot()
+  for _,predator in pairs(predators) do
+    if (predator != nil) then
+      if (player.sprite.x > predator.x-2 and player.sprite.x < predator.x+8) then
+        if (game.timer % 10 == 1) then
+          p = new_sprite(predator.x+3,predator.y+5,100,{17},1,0,0,1,3)
+          add(predator_plasma, p)
+        end
+      end
+    end
+  end
 end
 
 --
@@ -312,11 +361,11 @@ __gfx__
 00700700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+60000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+50000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
