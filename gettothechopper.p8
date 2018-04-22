@@ -11,6 +11,9 @@ game.state = 1
 game.timer = 1
 game.scroll = 1
 game.get_up_timer =0
+game.score = 0
+game.run_time = 1000
+game.distance = 800
 sprites = {}
 player = {}
 bullets = {}
@@ -34,6 +37,8 @@ function _draw()
 	cls(4)
   	if (game.state == 1) draw_start_screen()
     if (game.state == 2) draw_game_screen()
+    if (game.state == 3) draw_win_screen()
+    if (game.state == 4) draw_lose_screen()
 end
 
 --
@@ -44,6 +49,10 @@ function update_start_screen()
 end
 
 function update_game_screen()
+  if (game.distance == 0) game.state = 3
+  if (game.run_time == 0) game.state = 4
+  game.distance -=game.scroll
+  game.run_time -=1
   foreach(bullets, update_bullet)
   foreach(terrain, scroll_terrain)
   foreach(bad_guys, scroll_bad_guy)
@@ -116,6 +125,7 @@ function bullets_collide()
           del(bullet,bullets)
           del(sprites,bad_guy)
           del(sprites,bullets)
+          game.score +=10
         end
       end
     end
@@ -157,7 +167,20 @@ function draw_start_screen()
 end
 function draw_game_screen()
   foreach(sprites, sprite_draw)
+  print("score "..game.score.." time "..game.run_time.." distance "..game.distance)
+  
 end
+
+function draw_win_screen()
+  print("you got to the chopper")
+  print("with a score of "..game.score)
+end
+
+function draw_lose_screen()
+  print("booooom, you lose") 
+  print("with a score of "..game.score)
+end
+
 
 --
 -- sprite code
